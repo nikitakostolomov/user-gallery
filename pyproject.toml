@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "user-gallery"
+version = "0.1.0"
+description = ""
+authors = ["Nikita Kostolomov"]
+readme = "README.md"
+packages = [{include = "user_gallery"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+pre-commit = "^3.0.4"
+commitizen = "^2.40.0"
+
+[tool.black]
+line-length = 79
+include = '\.pyi?$'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
