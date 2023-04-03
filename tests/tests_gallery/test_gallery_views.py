@@ -55,7 +55,7 @@ def test_retrieve_image_view(
         client.force_authenticate(user=user)
     else:
         client.force_authenticate()
-    url = reverse("gallery-add-get-delete-image", kwargs={"pk": user.pk})
+    url = reverse("gallery-add-get-delete-image")
 
     response = client.get(url, data={"image_name": image_name})
 
@@ -106,10 +106,7 @@ def test_delete_image_view(
         # check, that image exists
         assert all(images_exist([image_name], user.pk, storage))
     # client.delete(url, data=data}) passes data to body ???????
-    url = (
-        reverse("gallery-add-get-delete-image", kwargs={"pk": user.id})
-        + f"?image_name={image_name}"
-    )
+    url = reverse("gallery-add-get-delete-image") + f"?image_name={image_name}"
 
     response = client.delete(url)
 
@@ -153,10 +150,8 @@ def test_update_image_view(
     else:
         client.force_authenticate()
 
-    url = reverse("gallery-add-get-delete-image", kwargs={"pk": user.pk})
+    url = reverse("gallery-add-get-delete-image")
     response = make_request_to_upload_image(client, IMG_1_PATH, url, "put")
-    # with open(IMG_1_PATH, "rb") as f:
-    #     response = client.put(url, data={"image": f})
 
     assert response.status_code == expected_status_code
 

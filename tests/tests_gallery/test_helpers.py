@@ -36,12 +36,12 @@ def test_form_image_dir_validation():
 
 
 @pytest.mark.integration
-def test_raise_404_if_image_not_exist(storage):
+def test_raise_404_if_image_not_exist(post_image_to_minio_without_user):
     """
     If file was not found, Http404 exception should be raised
-    :param put_object_to_minio: put some file like object ot minio,
-    that has path "1/my_image"
+    :param post_image_to_minio_without_user: post image to minio
     """
+    storage = post_image_to_minio_without_user
     with pytest.raises(Http404):
         raise_404_if_image_not_exist(storage, "not/existing/directory")
 
@@ -50,8 +50,7 @@ def test_raise_404_if_image_not_exist(storage):
 def test_not_raise_404_if_image_exist(post_image_to_minio_without_user):
     """
     If file was found, None should be returned
-    :param put_object_to_minio: put some file like object ot minio,
-    that has path "1/my_image"
+    :param post_image_to_minio_without_user: post image to minio
     """
     storage = post_image_to_minio_without_user
     result = raise_404_if_image_not_exist(storage, IMAGE_DIR)

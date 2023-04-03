@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path(
-        "<int:pk>",
+        "image",
         views.gallery_add_get_delete_image_view,
         name="gallery-add-get-delete-image",
     ),
