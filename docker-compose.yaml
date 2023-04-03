@@ -43,6 +43,19 @@ services:
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
     command: server --console-address ":9001" /data
+    networks:
+      - postgres
+
+  web:
+    build: .
+    command: python backend/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - minio
+    networks:
+      - postgres
 
 networks:
   postgres:
