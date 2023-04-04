@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "users",
     "gallery",
     "rest_framework.authtoken",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -88,10 +89,10 @@ WSGI_APPLICATION = "user_gallery.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "gallery",
-        "USER": "postgres",
-        "PASSWORD": "123",
-        "HOST": "postgres",
+        "NAME": env("POSTGRES_DB_NAME"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("POSTGRES_HOST"),
         "PORT": "5432",
     }
 }
@@ -160,4 +161,11 @@ REST_FRAMEWORK = {
     ],
     # override exception handler
     "EXCEPTION_HANDLER": "user_gallery.error_handlers.custom_exception_handler",  # noqa E501
+}
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Basic": {"type": "basic"},
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"},
+    }
 }

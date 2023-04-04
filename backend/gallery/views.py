@@ -1,3 +1,4 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, status
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAdminUser
@@ -6,7 +7,7 @@ from storages.backends.s3boto3 import S3Boto3Storage
 
 from .helpers import form_image_dir, raise_404_if_image_not_exist
 from .mixins import UserQuerySetMixin
-from .serializers import ImageSerializer
+from .serializers import ImageQueryParamsSerializer, ImageSerializer
 
 
 class GalleryAddGetDeleteImageAPIView(
@@ -14,8 +15,15 @@ class GalleryAddGetDeleteImageAPIView(
 ):
     parser_classes = [MultiPartParser]
     lookup_field = "pk"
+    serializer_class = ImageQueryParamsSerializer
 
-    def retrieve(self, request, *args, **kwargs):
+    def get_serializer_class(self):
+        if self.request.method in ("PUT", "PATCH"):
+            return ImageSerializer
+        return self.serializer_class
+
+    @swagger_auto_schema(query_serializer=ImageQueryParamsSerializer)
+    def get(self, request, *args, **kwargs):
         file_dir, image_name = form_image_dir(
             request.query_params, request.user.pk
         )
@@ -23,7 +31,8 @@ class GalleryAddGetDeleteImageAPIView(
         raise_404_if_image_not_exist(storage, file_dir)
         return Response({image_name: storage.url(file_dir)})
 
-    def destroy(self, request, *args, **kwargs):
+    @swagger_auto_schema(query_serializer=ImageQueryParamsSerializer)
+    def delete(self, request, *args, **kwargs):
         file_dir, _ = form_image_dir(request.query_params, request.user.pk)
         storage = S3Boto3Storage()
         raise_404_if_image_not_exist(storage, file_dir)
