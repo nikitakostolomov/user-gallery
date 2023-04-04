@@ -14,9 +14,11 @@ This project uses `pytest` for testing.
 1. Clone repo to your computer  
 `git clone https://github.com/nikitakostolomov/user-gallery.git`
 2. Create virtual environment via poetry  
-`poetry env use <your python version>`
-3. Add `backend` dir to your PYTHONPATH
-4. Install dependencies  
+`~/user-gallery$ poetry env use <your python version>`
+3. Activate virtual environment  
+`~/user-gallery$ poetry shell`
+4. Add `backend` dir to your PYTHONPATH
+5. Install dependencies  
 `poetry install`
 ## Configure postgres and minIO
 1. Build app image  
